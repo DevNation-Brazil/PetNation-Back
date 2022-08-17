@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/pet")
 public class PetController {
 
