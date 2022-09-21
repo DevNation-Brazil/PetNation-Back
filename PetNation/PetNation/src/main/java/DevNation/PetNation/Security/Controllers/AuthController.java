@@ -32,7 +32,7 @@ public class AuthController {
 
             String token = tokenService.gerarToken(authentication);
 
-            return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
+            return ResponseEntity.ok(new TokenDTO(token, "Bearer", userDTO.getEmail(), userDTO.getNome()));
 
         } catch (AuthenticationException e){
 

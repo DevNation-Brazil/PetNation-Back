@@ -12,6 +12,8 @@ public class UserDTO {
 
     private String password;
 
+    private String nome;
+
     public UsernamePasswordAuthenticationToken converter(){
         return new UsernamePasswordAuthenticationToken(email, password);
     }
