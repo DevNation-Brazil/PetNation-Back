@@ -59,5 +59,47 @@ public class PetController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @PatchMapping("/{petId}")
+    public ResponseEntity<?> editarPet(@PathVariable Integer petId, @RequestBody Pet pet) {
+
+        try {
+
+            Pet petEditado = petService.editarPet(petId, pet);
+
+            if(!Objects.isNull(petEditado)){
+
+                return ResponseEntity.status(HttpStatus.OK).body(petEditado);
+
+            } else {
+
+                return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+            }
+        } catch (Exception e){
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{petId}")
+    public ResponseEntity<?> removerPet(@PathVariable Integer petId) {
+
+        try {
+
+            boolean removido = petService.removerPet(petId);
+
+            if(removido){
+
+                return ResponseEntity.status(HttpStatus.OK).body(removido);
+
+            } else {
+
+                return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+            }
+        } catch (Exception e){
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
 

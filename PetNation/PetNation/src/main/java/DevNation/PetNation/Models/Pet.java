@@ -1,6 +1,7 @@
 package DevNation.PetNation.Models;
 
 
+import DevNation.PetNation.Security.Models.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class Pet {
     private String sexo;
 
     private String porte;
+
+    private Integer userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Tipo")
