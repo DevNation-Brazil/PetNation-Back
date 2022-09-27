@@ -41,8 +41,9 @@ public class AuthController {
 
             Optional<User> user = userRepository.findByEmail(userDTO.getEmail());
             String nome = user.get().getNome();
+            Integer id = user.get().getId();
 
-            return ResponseEntity.ok(new TokenDTO(token, "Bearer", userDTO.getEmail(), nome));
+            return ResponseEntity.ok(new TokenDTO(token, "Bearer", userDTO.getEmail(), nome, id));
 
         } catch (AuthenticationException e){
 

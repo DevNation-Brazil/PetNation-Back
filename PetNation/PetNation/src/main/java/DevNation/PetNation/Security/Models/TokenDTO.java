@@ -14,4 +14,6 @@ public class TokenDTO {
     private String emailUser;
 
     private String nomeUser;
+
+    private Integer userId;
 }
