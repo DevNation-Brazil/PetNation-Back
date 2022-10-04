@@ -31,6 +31,10 @@ public class PetService {
         return petRepository.findAll();
     }
 
+    public Pet listarPet(Integer id){
+        return petRepository.findById(id).orElse(null);
+    }
+
     public Pet editarPet(Integer id, Pet pet) {
 
         if(!Objects.isNull(pet) && id!= null){

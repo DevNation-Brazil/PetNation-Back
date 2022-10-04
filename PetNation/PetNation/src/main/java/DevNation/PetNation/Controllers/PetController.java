@@ -101,5 +101,26 @@ public class PetController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{petId}")
+    public ResponseEntity<?> listarPet(@PathVariable Integer petId) {
+
+        try {
+
+            Pet petsCadastrado = petService.listarPet(petId);
+
+            if(!Objects.isNull(petsCadastrado)){
+
+                return ResponseEntity.status(HttpStatus.OK).body(petsCadastrado);
+
+            } else {
+
+                return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Id inválido");
+            }
+        } catch (Exception e){
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
 
