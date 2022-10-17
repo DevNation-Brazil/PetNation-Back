@@ -31,6 +31,8 @@ public class Pet {
 
     private Integer userId;
 
+    private String userName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Tipo")
     private Tipo tipo;
