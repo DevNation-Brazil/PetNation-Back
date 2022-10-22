@@ -2,9 +2,13 @@ package DevNation.PetNation.Services;
 
 import DevNation.PetNation.Models.Pet;
 import DevNation.PetNation.Repositories.PetRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,9 +21,19 @@ public class PetService {
     private PetRepository petRepository;
 
 
-    public Pet cadastrarPet(Pet novoPet){
+    public Pet cadastrarPet(Pet novoPet, MultipartFile file) throws IOException {
 
         if(!Objects.isNull(novoPet)){
+
+            byte[] image = file.getBytes();
+            String hash = DigestUtils.md5Hex(image);
+
+            novoPet.setPetImageHash(hash);
+
+            String dir = System.getProperty("user.dir");
+
+            file.transferTo(new File(dir + "\\Back End\\PetNation\\PetNation\\src\\main\\java\\DevNation\\PetNation\\Content\\Images\\" + hash + ".jpg"));
+            novoPet.setImageSource("localhost:8080/content/image/" + hash + ".jpg");
 
             petRepository.save(novoPet);
             return novoPet;
@@ -56,8 +70,21 @@ public class PetService {
 
     public boolean removerPet(Integer id){
 
-        petRepository.deleteById(id);
+        Pet petBase = petRepository.findById(id).orElse(null);
 
-        return true;
+        if(!Objects.isNull(petBase)){
+
+            String hash = petBase.getPetImageHash();
+
+            String dir = System.getProperty("user.dir");
+
+            File file = (new File(dir + "\\Back End\\PetNation\\PetNation\\src\\main\\java\\DevNation\\PetNation\\Content\\Images\\" + hash + ".jpg"));
+            file.delete();
+
+            petRepository.deleteById(id);
+
+            return true;
+
+        } else return false;
     }
 }

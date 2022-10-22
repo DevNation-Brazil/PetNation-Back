@@ -33,6 +33,10 @@ public class Pet {
 
     private String userName;
 
+    private String imageSource;
+
+    private String petImageHash;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Tipo")
     private Tipo tipo;

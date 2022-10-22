@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +20,11 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrarPet(@RequestBody Pet novoPet) {
+    public ResponseEntity<?> cadastrarPet(@RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet novoPet) {
 
         try {
 
-            Pet petCadastrado = petService.cadastrarPet(novoPet);
+            Pet petCadastrado = petService.cadastrarPet(novoPet, file);
 
             if(!Objects.isNull(petCadastrado)){
 
