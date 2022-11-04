@@ -33,7 +33,7 @@ public class PetService {
             String dir = System.getProperty("user.dir");
 
             file.transferTo(new File(dir + "\\Back End\\PetNation\\PetNation\\src\\main\\java\\DevNation\\PetNation\\Content\\Images\\" + hash + ".jpg"));
-            novoPet.setImageSource("localhost:8080/content/image/" + hash + ".jpg");
+            novoPet.setImageSource("http://localhost:8080/content/image/" + hash + ".jpg");
 
             petRepository.save(novoPet);
             return novoPet;
