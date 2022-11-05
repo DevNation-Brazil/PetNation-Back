@@ -62,11 +62,11 @@ public class PetController {
     }
 
     @PatchMapping("/{petId}")
-    public ResponseEntity<?> editarPet(@PathVariable Integer petId, @RequestBody Pet pet) {
+    public ResponseEntity<?> editarPet(@PathVariable Integer petId, @RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet pet) {
 
         try {
 
-            Pet petEditado = petService.editarPet(petId, pet);
+            Pet petEditado = petService.editarPet(petId, pet, file);
 
             if(!Objects.isNull(petEditado)){
 

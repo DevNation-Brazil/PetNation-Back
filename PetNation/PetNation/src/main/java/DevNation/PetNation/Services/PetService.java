@@ -49,18 +49,32 @@ public class PetService {
         return petRepository.findById(id).orElse(null);
     }
 
-    public Pet editarPet(Integer id, Pet pet) {
+    public Pet editarPet(Integer id, Pet pet, MultipartFile file) throws IOException {
 
         if(!Objects.isNull(pet) && id!= null){
 
+            String dir = System.getProperty("user.dir");
+
             Pet petParaEditar = petRepository.findById(id).orElse(null);
 
+            String oldHash = petParaEditar.getPetImageHash();
+
+            File oldFile = (new File(dir + "\\Back End\\PetNation\\PetNation\\src\\main\\java\\DevNation\\PetNation\\Content\\Images\\" + oldHash + ".jpg"));
+            oldFile.delete();
+
+            byte[] image = file.getBytes();
+            String hash = DigestUtils.md5Hex(image);
+
+            petParaEditar.setPetImageHash(hash);
             petParaEditar.setNome(pet.getNome());
             petParaEditar.setIdade(pet.getIdade());
             petParaEditar.setPorte(pet.getPorte());
             petParaEditar.setSexo(pet.getSexo());
             petParaEditar.setRaca(pet.getRaca());
             petParaEditar.setTipo(pet.getTipo());
+
+            file.transferTo(new File(dir + "\\Back End\\PetNation\\PetNation\\src\\main\\java\\DevNation\\PetNation\\Content\\Images\\" + hash + ".jpg"));
+            petParaEditar.setImageSource("http://localhost:8080/content/image/" + hash + ".jpg");
 
             petRepository.save(petParaEditar);
             return petParaEditar;
