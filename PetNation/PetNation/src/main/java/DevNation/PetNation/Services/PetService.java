@@ -21,7 +21,7 @@ public class PetService {
     private PetRepository petRepository;
 
 
-    public Pet cadastrarPet(Pet novoPet, MultipartFile file) throws IOException {
+    public Pet cadastrarPetComImagem(Pet novoPet, MultipartFile file) throws IOException {
 
         if(!Objects.isNull(novoPet)){
 
@@ -36,6 +36,17 @@ public class PetService {
             novoPet.setImageSource("http://localhost:8080/content/image/" + hash + ".jpg");
 
             petRepository.save(novoPet);
+            return novoPet;
+
+        } else return null;
+    }
+
+    public Pet cadastrarPetSemImagem(Pet novoPet) throws IOException {
+
+        if(!Objects.isNull(novoPet)){
+
+            petRepository.save(novoPet);
+
             return novoPet;
 
         } else return null;
@@ -75,6 +86,26 @@ public class PetService {
 
             file.transferTo(new File(dir + "\\Back End\\PetNation\\PetNation\\src\\main\\java\\DevNation\\PetNation\\Content\\Images\\" + hash + ".jpg"));
             petParaEditar.setImageSource("http://localhost:8080/content/image/" + hash + ".jpg");
+
+            petRepository.save(petParaEditar);
+            return petParaEditar;
+
+        } return null;
+    }
+
+    public Pet editarPetSemImagem(Integer id, Pet pet) throws IOException {
+
+        if(!Objects.isNull(pet) && id!= null){
+
+            Pet petParaEditar = petRepository.findById(id).orElse(null);
+
+            petParaEditar.setNome(pet.getNome());
+            petParaEditar.setIdade(pet.getIdade());
+            petParaEditar.setPorte(pet.getPorte());
+            petParaEditar.setSexo(pet.getSexo());
+            petParaEditar.setRaca(pet.getRaca());
+            petParaEditar.setTipo(pet.getTipo());
+
 
             petRepository.save(petParaEditar);
             return petParaEditar;

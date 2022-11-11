@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,25 +21,50 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrarPet(@RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet novoPet) {
+    public ResponseEntity<?> cadastrarPet(@RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet novoPet) throws IOException {
 
-        try {
+        if (!Objects.isNull(file)) {
 
-            Pet petCadastrado = petService.cadastrarPet(novoPet, file);
+            Pet petCadastrado = petService.cadastrarPetComImagem(novoPet, file);
 
-            if(!Objects.isNull(petCadastrado)){
+            try {
 
-                return ResponseEntity.status(HttpStatus.OK).body(petCadastrado);
+                if (!Objects.isNull(petCadastrado)) {
 
-            } else {
+                    return ResponseEntity.status(HttpStatus.OK).body(petCadastrado);
 
-                return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+                } else {
+
+                    return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+                }
+            } catch (Exception e) {
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
             }
-        } catch (Exception e){
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } else {
+
+            Pet petCadastrado = petService.cadastrarPetSemImagem(novoPet);
+
+            try {
+
+                if (!Objects.isNull(petCadastrado)) {
+
+                    return ResponseEntity.status(HttpStatus.OK).body(petCadastrado);
+
+                } else {
+
+                    return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+                }
+            } catch (Exception e) {
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            }
         }
     }
+
+
+
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
@@ -64,23 +90,47 @@ public class PetController {
     @PatchMapping("/{petId}")
     public ResponseEntity<?> editarPet(@PathVariable Integer petId, @RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet pet) {
 
-        try {
+        if (!Objects.isNull(file)) {
 
-            Pet petEditado = petService.editarPet(petId, pet, file);
+            try {
 
-            if(!Objects.isNull(petEditado)){
+                Pet petEditado = petService.editarPet(petId, pet, file);
 
-                return ResponseEntity.status(HttpStatus.OK).body(petEditado);
+                if(!Objects.isNull(petEditado)){
 
-            } else {
+                    return ResponseEntity.status(HttpStatus.OK).body(petEditado);
 
-                return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+                } else {
+
+                    return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+                }
+            } catch (Exception e){
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
             }
-        } catch (Exception e){
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } else {
+
+            try {
+
+                Pet petEditado = petService.editarPetSemImagem(petId, pet);
+
+                if(!Objects.isNull(petEditado)){
+
+                    return ResponseEntity.status(HttpStatus.OK).body(petEditado);
+
+                } else {
+
+                    return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Pet inválido");
+                }
+            } catch (Exception e){
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            }
         }
     }
+
+
 
     @DeleteMapping("/{petId}")
     public ResponseEntity<?> removerPet(@PathVariable Integer petId) {
