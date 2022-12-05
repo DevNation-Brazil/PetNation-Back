@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/key/user")
 public class UserController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class UserController {
 
             if(!Objects.isNull(userCadastrado)){
 
-                return ResponseEntity.status(HttpStatus.OK).body(userCadastrado);
+                return ResponseEntity.status(HttpStatus.OK).body("Cadastrado");
 
             } else {
 

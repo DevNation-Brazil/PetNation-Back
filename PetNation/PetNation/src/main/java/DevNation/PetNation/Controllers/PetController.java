@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/pet")
+@RequestMapping("/api/v1")
 public class PetController {
 
     @Autowired
     private PetService petService;
 
-    @PostMapping
+    @PostMapping("/pet")
     public ResponseEntity<?> cadastrarPet(@RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet novoPet) throws IOException {
 
         if (!Objects.isNull(file)) {
@@ -66,7 +65,7 @@ public class PetController {
 
 
 
-    @GetMapping
+    @GetMapping("/key/pet")
     public ResponseEntity<?> listarTodos() {
 
         try {
@@ -87,7 +86,7 @@ public class PetController {
         }
     }
 
-    @PatchMapping("/{petId}")
+    @PatchMapping("/pet/{petId}")
     public ResponseEntity<?> editarPet(@PathVariable Integer petId, @RequestParam(value = "file", required = false) MultipartFile file, @RequestPart("DTO") Pet pet) {
 
         if (!Objects.isNull(file)) {
@@ -132,7 +131,7 @@ public class PetController {
 
 
 
-    @DeleteMapping("/{petId}")
+    @DeleteMapping("/pet/{petId}")
     public ResponseEntity<?> removerPet(@PathVariable Integer petId) {
 
         try {
@@ -153,7 +152,7 @@ public class PetController {
         }
     }
 
-    @GetMapping("/{petId}")
+    @GetMapping("/pet/{petId}")
     public ResponseEntity<?> listarPet(@PathVariable Integer petId) {
 
         try {
