@@ -1,7 +1,6 @@
 package DevNation.PetNation.Security;
 
 import DevNation.PetNation.Security.Repositories.UserRepository;
-import DevNation.PetNation.Security.Services.AuthByApiKeyFilter;
 import DevNation.PetNation.Security.Services.AuthenticationService;
 import DevNation.PetNation.Security.Services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -56,6 +56,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             http.authorizeRequests()
                     .anyRequest().authenticated().and().cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and().addFilterBefore(new AuthByTokenFilter(tokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
+        }
+
+        @Override
+        public void configure(WebSecurity webSecurity){
+            webSecurity.ignoring().antMatchers("/content/image/**");
         }
     }
 

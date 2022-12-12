@@ -1,4 +1,4 @@
-package DevNation.PetNation.Security.Services;
+package DevNation.PetNation.Security;
 
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 

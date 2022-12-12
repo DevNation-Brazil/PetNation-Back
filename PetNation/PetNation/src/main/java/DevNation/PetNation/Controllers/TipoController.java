@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/tipo")
+@RequestMapping("/api/v1/key/tipo")
 public class TipoController {
 
     @Autowired

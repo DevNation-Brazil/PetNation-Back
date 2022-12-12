@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/raca")
+@RequestMapping("/api/v1/key/raca")
 public class RacaController {
 
     @Autowired
