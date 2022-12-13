@@ -152,7 +152,7 @@ public class PetController {
         }
     }
 
-    @GetMapping("/pet/{petId}")
+    @GetMapping("/key/pet/{petId}")
     public ResponseEntity<?> listarPet(@PathVariable Integer petId) {
 
         try {
